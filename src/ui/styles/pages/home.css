@@ -1,0 +1,62 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top, #ecfeff, var(--bg));
+  color: var(--text);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.card {
+  width: min(640px, 100%);
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+.todo-form {
+  margin-bottom: 1rem;
+}
+
+.todo-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+.todo-form-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+}
+
+.todo-form-row input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem;
+}
+
+.todo-list {
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.todo-item,
+.todo-empty {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  background: #f9fafb;
+}
+
+.todo-empty {
+  color: #6b7280;
+  font-style: italic;
+}
