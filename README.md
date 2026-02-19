@@ -62,14 +62,11 @@ django_proyecto_2/
 
 ## Como ejecutar
 
-Opciones simples (sin frameworks):
-
-1. Abrir `index.html` directo en el navegador.
-2. Levantar servidor local:
+Solo con JavaScript (sin Python):
 
 ```bash
 cd /Users/matheu/trabajo/django_proyecto_2
-python3 -m http.server 5500
+npx serve . -l 5500
 ```
 
 Luego abrir: `http://localhost:5500`
