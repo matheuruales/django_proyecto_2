@@ -366,21 +366,20 @@ header nav a:hover {
 #lineup {
   padding: var(--spacing-6xl) var(--spacing-md);
   background-color: var(--color-white);
-}
-
-#lineup h2 {
-  text-align: center;
-  margin-bottom: var(--spacing-4xl);
-  animation: fadeInUp 0.8s ease-out;
-}
-
-#lineup {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--spacing-2xl);
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+}
+
+#lineup h2 {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+  animation: fadeInUp 0.8s ease-out;
+  grid-column: 1 / -1;
+  padding: 0 var(--spacing-lg);
 }
 
 #lineup article {
