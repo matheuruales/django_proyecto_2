@@ -3,32 +3,345 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>django_proyecto_2 | Hexagonal Vanilla JS</title>
+    <meta
+      name="description"
+      content="Landing page de laboratorio inspirada en Apple iPhone, construida solo con HTML semántico."
+    />
+    <title>iPhone | Laboratorio Landing HTML</title>
     <link rel="stylesheet" href="./src/ui/styles/main.css" />
   </head>
   <body>
-    <main class="page">
-      <section class="card">
-        <h1>Todo App (Arquitectura Hexagonal)</h1>
+    <!-- Encabezado principal con navegación global -->
+    <header>
+      <div>
+        <p>Trade In: Obtén crédito al cambiar tu iPhone anterior por uno nuevo.</p>
+      </div>
 
-        <form id="todo-form" class="todo-form" autocomplete="off">
-          <label for="todo-title">Nueva tarea</label>
-          <div class="todo-form-row">
-            <input
-              id="todo-title"
-              name="todo-title"
-              type="text"
-              placeholder="Escribe una tarea"
-              required
-            />
-            <button class="btn" type="submit">Agregar</button>
-          </div>
+      <nav aria-label="Navegación principal">
+        <ul>
+          <li><a href="#hero">iPhone</a></li>
+          <li><a href="#lineup">Modelos</a></li>
+          <li><a href="#beneficios">Beneficios</a></li>
+          <li><a href="#caracteristicas">Características</a></li>
+          <li><a href="#testimonios">Testimonios</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero principal -->
+      <section id="hero" aria-labelledby="hero-title">
+        <article>
+          <h1 id="hero-title">iPhone 17 Pro, iPhone Air y iPhone 17</h1>
+          <p>
+            Explora una nueva generación de iPhone con rendimiento avanzado,
+            diseño duradero y cámara de alto nivel.
+          </p>
+          <p>
+            Desde $599 hasta $1099 según modelo. Opciones de financiación y
+            promociones con operador.
+          </p>
+          <p>
+            <a href="#lineup">Comparar modelos</a>
+            <a href="#contacto">Comprar ahora</a>
+          </p>
+          <img
+            src="./public/assets/images/hero/iphone-family-hero.jpg"
+            alt="iPhone 17 Pro en color naranja con enfoque en su sistema de cámaras"
+            width="372"
+            height="395"
+          />
+        </article>
+      </section>
+
+      <!-- Sección de lineup inspirada en la comparación de Apple -->
+      <section id="lineup" aria-labelledby="lineup-title">
+        <h2 id="lineup-title">Explora la línea de iPhone</h2>
+
+        <article>
+          <h3>iPhone 17 Pro</h3>
+          <p>Diseño innovador para máximo rendimiento y batería.</p>
+          <p>Desde $1099.</p>
+          <img
+            src="./public/assets/images/lineup/iphone-17-pro.jpg"
+            alt="iPhone 17 Pro en acabado cosmic orange mostrando su sistema de cámara"
+            width="372"
+            height="395"
+          />
+          <p><a href="#contacto">Más información</a></p>
+        </article>
+
+        <article>
+          <h3>iPhone Air</h3>
+          <p>El iPhone más delgado hasta ahora, con potencia de nivel pro.</p>
+          <p>Desde $999.</p>
+          <img
+            src="./public/assets/images/lineup/iphone-air.jpg"
+            alt="iPhone Air en color azul claro visto de frente y parte trasera"
+            width="372"
+            height="395"
+          />
+          <p><a href="#contacto">Más información</a></p>
+        </article>
+
+        <article>
+          <h3>iPhone 17</h3>
+          <p>Más resistente, más eficiente y aún más agradable de usar.</p>
+          <p>Desde $799.</p>
+          <img
+            src="./public/assets/images/lineup/iphone-17.jpg"
+            alt="iPhone 17 en tono azul/violeta mostrando su cámara dual"
+            width="372"
+            height="395"
+          />
+          <p><a href="#contacto">Más información</a></p>
+        </article>
+
+        <article>
+          <h3>iPhone 16</h3>
+          <p>Rendimiento rápido y diseño durable.</p>
+          <p>Desde $699.</p>
+          <img
+            src="./public/assets/images/lineup/iphone-16.jpg"
+            alt="iPhone 16 en tono violeta claro con diseño de doble cámara"
+            width="372"
+            height="395"
+          />
+          <p><a href="#contacto">Más información</a></p>
+        </article>
+
+        <article>
+          <h3>iPhone 16e</h3>
+          <p>Todo lo que te gusta del iPhone, con un precio más accesible.</p>
+          <p>Desde $599.</p>
+          <img
+            src="./public/assets/images/lineup/iphone-16e.jpg"
+            alt="iPhone 16e en color blanco con vista frontal y trasera"
+            width="372"
+            height="395"
+          />
+          <p><a href="#contacto">Más información</a></p>
+        </article>
+      </section>
+
+      <!-- Sección obligatoria: beneficios (mínimo 3) -->
+      <section id="beneficios" aria-labelledby="beneficios-title">
+        <h2 id="beneficios-title">Por qué comprar iPhone aquí</h2>
+
+        <article>
+          <h3>Apple Trade In</h3>
+          <p>
+            Compara modelos y entrega tu equipo actual para reducir el costo de
+            tu próximo iPhone.
+          </p>
+          <img
+            src="./public/assets/images/benefits/trade-in.png"
+            alt="Dos iPhone de diferentes gamas colocados lado a lado para comparación"
+            width="80"
+            height="80"
+          />
+        </article>
+
+        <article>
+          <h3>Compra iPhone fácilmente</h3>
+          <p>
+            Revisa la familia completa de iPhone y elige el modelo que mejor se
+            ajuste a tu presupuesto.
+          </p>
+          <img
+            src="./public/assets/images/benefits/shop-iphone.png"
+            alt="Grupo de iPhone en varios colores para representar la compra de modelos"
+            width="54"
+            height="75"
+          />
+        </article>
+
+        <article>
+          <h3>Accesorios oficiales</h3>
+          <p>
+            Personaliza tu iPhone con accesorios compatibles para protegerlo y
+            ampliar su uso diario.
+          </p>
+          <img
+            src="./public/assets/images/benefits/accessories.png"
+            alt="iPhone con accesorios como funda y billetera magnética"
+            width="64"
+            height="80"
+          />
+        </article>
+
+        <article>
+          <h3>Experiencia iOS</h3>
+          <p>
+            Disfruta de un sistema fluido con integración entre apps y funciones
+            nativas del ecosistema Apple.
+          </p>
+          <img
+            src="./public/assets/images/benefits/ios.png"
+            alt="Logotipo de iOS sobre fondo azul"
+            width="62"
+            height="62"
+          />
+        </article>
+      </section>
+
+      <!-- Sección obligatoria: características -->
+      <section id="caracteristicas" aria-labelledby="caracteristicas-title">
+        <h2 id="caracteristicas-title">Conoce las características del iPhone</h2>
+
+        <article>
+          <h3>Diseño ultradelgado</h3>
+          <p>El modelo Air destaca por un formato ligero y cómodo para el uso diario.</p>
+          <img
+            src="./public/assets/images/features/air-design.png"
+            alt="Miniatura del iPhone Air mostrando frente y parte trasera"
+            width="45"
+            height="77"
+          />
+        </article>
+
+        <article>
+          <h3>Cámara dual Fusion</h3>
+          <p>
+            El iPhone 17 incorpora cámara dual para capturas nítidas en foto y video.
+          </p>
+          <img
+            src="./public/assets/images/features/camera-fusion.png"
+            alt="Miniatura del iPhone 17 con módulo de cámara dual"
+            width="43"
+            height="73"
+          />
+        </article>
+
+        <article>
+          <h3>Rendimiento equilibrado</h3>
+          <p>
+            El iPhone 16 ofrece una experiencia fluida para tareas cotidianas y multimedia.
+          </p>
+          <img
+            src="./public/assets/images/features/performance.png"
+            alt="Miniatura del iPhone 16 en color azul con vista frontal y trasera"
+            width="42"
+            height="78"
+          />
+        </article>
+
+        <article>
+          <h3>Entrada accesible al ecosistema</h3>
+          <p>
+            El iPhone 16e brinda funciones clave de iPhone con una propuesta más accesible.
+          </p>
+          <img
+            src="./public/assets/images/features/value.png"
+            alt="Miniatura del iPhone 16e en color claro con vista frontal y trasera"
+            width="43"
+            height="72"
+          />
+        </article>
+      </section>
+
+      <!-- Sección obligatoria: testimonios -->
+      <section id="testimonios" aria-labelledby="testimonios-title">
+        <h2 id="testimonios-title">Testimonios</h2>
+
+        <article>
+          <h3>María G.</h3>
+          <p>
+            "Migrar al iPhone fue muy simple. La batería me dura todo el día y
+            la cámara es excelente para mi trabajo."
+          </p>
+        </article>
+
+        <article>
+          <h3>Diego R.</h3>
+          <p>
+            "El rendimiento se nota desde el primer uso. Todo abre rápido y el
+            diseño se siente muy premium."
+          </p>
+        </article>
+
+        <article>
+          <h3>Lucía P.</h3>
+          <p>
+            "Con la ayuda de configuración personalizada dejé mi teléfono listo
+            en minutos. Muy buena experiencia."
+          </p>
+        </article>
+      </section>
+
+      <!-- Sección obligatoria: formulario de contacto -->
+      <section id="contacto" aria-labelledby="contacto-title">
+        <h2 id="contacto-title">Contacto</h2>
+        <p>
+          Completa el formulario para recibir información sobre modelos,
+          disponibilidad y promociones.
+        </p>
+
+        <form action="#" method="post">
+          <fieldset>
+            <legend>Solicita asesoría</legend>
+
+            <p>
+              <label for="nombre">Nombre completo</label>
+              <input id="nombre" name="nombre" type="text" required />
+            </p>
+
+            <p>
+              <label for="email">Correo electrónico</label>
+              <input id="email" name="email" type="email" required />
+            </p>
+
+            <p>
+              <label for="modelo">Modelo de interés</label>
+              <select id="modelo" name="modelo" required>
+                <option value="">Selecciona una opción</option>
+                <option value="iphone-17-pro">iPhone 17 Pro</option>
+                <option value="iphone-air">iPhone Air</option>
+                <option value="iphone-17">iPhone 17</option>
+                <option value="iphone-16">iPhone 16</option>
+                <option value="iphone-16e">iPhone 16e</option>
+              </select>
+            </p>
+
+            <p>
+              <label for="mensaje">Mensaje</label>
+              <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+            </p>
+
+            <p>
+              <button type="submit">Enviar solicitud</button>
+            </p>
+          </fieldset>
         </form>
-
-        <ul id="todo-list" class="todo-list"></ul>
       </section>
     </main>
 
-    <script type="module" src="./src/main.js"></script>
+    <!-- Footer con enlaces de utilidad y redes sociales -->
+    <footer>
+      <section aria-labelledby="footer-nav-title">
+        <h2 id="footer-nav-title">Más sobre iPhone</h2>
+        <nav aria-label="Enlaces del pie de página">
+          <ul>
+            <li><a href="#lineup">Comparar iPhone</a></li>
+            <li><a href="#beneficios">Apple Trade In</a></li>
+            <li><a href="#caracteristicas">iOS y privacidad</a></li>
+            <li><a href="#contacto">Comprar iPhone</a></li>
+          </ul>
+        </nav>
+      </section>
+
+      <section aria-labelledby="social-title">
+        <h2 id="social-title">Redes sociales</h2>
+        <ul>
+          <li><a href="https://www.facebook.com/apple" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+          <li><a href="https://www.instagram.com/apple" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="https://www.youtube.com/apple" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          <li><a href="https://x.com/Apple" target="_blank" rel="noopener noreferrer">X</a></li>
+        </ul>
+      </section>
+
+      <p>&copy; 2026 iPhone Landing Lab. Proyecto académico universitario.</p>
+    </footer>
   </body>
 </html>
