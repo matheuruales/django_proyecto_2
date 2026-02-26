@@ -727,41 +727,45 @@ const FormValidationModule = (() => {
   };
 
   const setupFieldValidation = () => {
-    // Validación en tiempo real (input) y al perder foco (blur)
+    // Validación: Solo filtrar caracteres en nombre (sin mostrar error)
+    // Validación real: Solo en blur y submit
+    
     if (inputs.nombre) {
-      // Filtrar caracteres no permitidos en tiempo real
+      // Filtrar caracteres no permitidos en tiempo real (sin mostrar error)
       inputs.nombre.addEventListener('input', (e) => {
         const letrasRegex = /[^a-zA-ZáéíóúñÁÉÍÓÚÑ\s]/g;
         e.target.value = e.target.value.replace(letrasRegex, '');
-        validateField('nombre');
+        // Actualizar estado del botón pero no mostrar error visual
         updateSubmitButtonState();
       });
+      
+      // Mostrar validación solo cuando pierde foco
       inputs.nombre.addEventListener('blur', () => {
         validateField('nombre');
       });
     }
 
     if (inputs.email) {
-      inputs.email.addEventListener('input', () => {
-        validateField('email');
-        updateSubmitButtonState();
-      });
+      // Mostrar validación solo cuando pierde foco
       inputs.email.addEventListener('blur', () => {
         validateField('email');
       });
     }
 
     if (inputs.mensaje) {
+      // Solo actualizar estado del botón mientras escribe
       inputs.mensaje.addEventListener('input', () => {
-        validateField('mensaje');
         updateSubmitButtonState();
       });
+      
+      // Mostrar validación solo cuando pierde foco
       inputs.mensaje.addEventListener('blur', () => {
         validateField('mensaje');
       });
     }
 
     if (inputs.modelo) {
+      // Validar y mostrar error al cambiar
       inputs.modelo.addEventListener('change', () => {
         validateField('modelo');
         updateSubmitButtonState();
@@ -840,17 +844,61 @@ const FormValidationModule = (() => {
     });
 
     if (allValid) {
-      showSuccessMessage();
-      // Aquí iría el envío real del formulario
+      // Desabilitar formulario durante envío
+      disableFormDuringSubmit();
+      
+      // Mostrar loader
+      showLoader();
+
+      // Simular envío (2 segundos)
       setTimeout(() => {
-        form.reset();
-        removeSuccessMessage();
-        // Limpiar clases de validación
-        Object.values(inputs).forEach(input => {
-          input.classList.remove('field-invalid', 'field-valid');
-        });
-        updateSubmitButtonState();
+        hideLoader();
+        showSuccessMessage();
+
+        // Resetear formulario después de 1.5 segundos
+        setTimeout(() => {
+          form.reset();
+          removeSuccessMessage();
+          // Limpiar clases de validación
+          Object.values(inputs).forEach(input => {
+            input.classList.remove('field-invalid', 'field-valid');
+          });
+          updateSubmitButtonState();
+          enableFormAfterSubmit();
+        }, 1500);
       }, 2000);
+    }
+  };
+
+  const disableFormDuringSubmit = () => {
+    submitBtn.disabled = true;
+    Object.values(inputs).forEach(input => {
+      input.disabled = true;
+    });
+  };
+
+  const enableFormAfterSubmit = () => {
+    Object.values(inputs).forEach(input => {
+      input.disabled = false;
+    });
+    updateSubmitButtonState();
+  };
+
+  const showLoader = () => {
+    const loaderDiv = document.createElement('div');
+    loaderDiv.className = 'form-loader';
+    loaderDiv.innerHTML = `
+      <div class="loader-spinner"></div>
+      <p>Enviando solicitud...</p>
+    `;
+    form.appendChild(loaderDiv);
+  };
+
+  const hideLoader = () => {
+    const loader = document.querySelector('.form-loader');
+    if (loader) {
+      loader.classList.add('fade-out');
+      setTimeout(() => loader.remove(), 300);
     }
   };
 
@@ -900,7 +948,13 @@ const FormValidationModule = (() => {
     if (!successDiv) {
       successDiv = document.createElement('div');
       successDiv.className = 'form-success';
-      successDiv.textContent = '✓ Solicitud enviada exitosamente. Te contactaremos pronto.';
+      successDiv.innerHTML = `
+        <div class="success-content">
+          <span class="success-icon">✓</span>
+          <p>¡Solicitud enviada exitosamente!</p>
+          <p class="success-subtitle">Te contactaremos pronto.</p>
+        </div>
+      `;
       document.body.appendChild(successDiv);
     }
   };
@@ -908,7 +962,7 @@ const FormValidationModule = (() => {
   const removeSuccessMessage = () => {
     const successDiv = document.querySelector('.form-success');
     if (successDiv) {
-      successDiv.style.animation = 'fadeIn 0.3s ease-out reverse';
+      successDiv.classList.add('fade-out');
       setTimeout(() => successDiv.remove(), 300);
     }
   };
