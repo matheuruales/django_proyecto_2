@@ -380,6 +380,12 @@ header nav a:hover {
   opacity: 1;
 }
 
+header nav a.active {
+  color: var(--color-accent);
+  font-weight: 600;
+  position: relative;
+}
+
 .nav-cv {
   position: relative;
 }

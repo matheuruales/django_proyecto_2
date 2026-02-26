@@ -1201,6 +1201,42 @@ const ScrollModule = (() => {
 })();
 
 // ============================================
+// MODULE: Section Detection
+// ============================================
+const SectionDetectionModule = (() => {
+  const nav = document.querySelector('header nav');
+  const sections = document.querySelectorAll('main > section[id]');
+  
+  const init = () => {
+    if (!nav || sections.length === 0) return;
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.id;
+        const navLink = nav.querySelector(`a[href="#${id}"]`);
+        
+        if (navLink) {
+          if (entry.isIntersecting) {
+            nav.querySelectorAll('a').forEach(link => link.classList.remove('active'));
+            navLink.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    sections.forEach(section => observer.observe(section));
+  };
+  
+  return { init };
+})();
+
+// ============================================
 // APP INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1215,6 +1251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   CounterModule.init();
   ModalModule.init();
   ScrollModule.init();
+  SectionDetectionModule.init();
 
   // Log de inicialización en desarrollo
   if (process.env.NODE_ENV === 'development') {
