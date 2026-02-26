@@ -60,7 +60,7 @@ const NavigationModule = (() => {
         display: block;
         width: 24px;
         height: 2px;
-        background-color: #000;
+        background-color: var(--color-text-primary);
         transition: all 250ms ease;
       `;
     });
@@ -122,6 +122,8 @@ const NavigationModule = (() => {
         // Solo interceptar enlaces internos
         if (href.startsWith('#')) {
           e.preventDefault();
+          document.body.removeAttribute('data-view');
+          clearCvPanel();
           const targetId = href.substring(1);
           const targetElement = document.getElementById(targetId);
           
@@ -131,6 +133,540 @@ const NavigationModule = (() => {
         }
       });
     });
+  };
+
+  return { init };
+})();
+
+// ============================================
+// MODULE: Theme Toggle (Dark/Light)
+// ============================================
+const ThemeModule = (() => {
+  const STORAGE_KEY = 'iphone-theme';
+  const toggleButton = document.getElementById('theme-toggle');
+  const toggleText = toggleButton?.querySelector('[data-theme-text]');
+
+  const init = () => {
+    if (!toggleButton) return;
+
+    const storedTheme = getStoredTheme();
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+
+    applyTheme(initialTheme);
+
+    toggleButton.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      setStoredTheme(nextTheme);
+    });
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemChange = (event) => {
+      if (getStoredTheme()) return;
+      applyTheme(event.matches ? 'dark' : 'light');
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleSystemChange);
+    } else if (mediaQuery.addListener) {
+      mediaQuery.addListener(handleSystemChange);
+    }
+  };
+
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    toggleButton.setAttribute('aria-pressed', theme === 'dark');
+    toggleButton.setAttribute(
+      'aria-label',
+      theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'
+    );
+    if (toggleText) {
+      toggleText.textContent = theme === 'dark' ? 'Modo claro' : 'Modo oscuro';
+    }
+  };
+
+  const getStoredTheme = () => {
+    try {
+      return window.localStorage.getItem(STORAGE_KEY);
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const setStoredTheme = (theme) => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, theme);
+    } catch (error) {
+      // Silencioso si el almacenamiento no está disponible
+    }
+  };
+
+  return { init };
+})();
+
+// ============================================
+// MODULE: CV Dropdown + Renderer
+// ============================================
+const CvModule = (() => {
+  const toggleButton = document.getElementById('cv-toggle');
+  const menu = document.getElementById('cv-menu');
+  const panel = document.getElementById('cv-panel');
+  const section = document.getElementById('cv');
+
+  const options = menu ? Array.from(menu.querySelectorAll('[data-cv]')) : [];
+
+  const CV_CONTENT = {
+    matheu: `
+      <article class="cv-card">
+        <header class="cv-card__header">
+          <div>
+            <h3 class="cv-card__name">Johnatan Matheu Ruales Galvis</h3>
+            <p class="cv-card__subtitle">
+              Estudiante de Ingenieria de Software (3er semestre) | Desarrollo de software
+              (Full-Stack / IA / VR)
+            </p>
+            <p class="cv-card__meta">
+              Universidad Cooperativa de Colombia (UCC) — Campus Pasto, Colombia
+            </p>
+          </div>
+          <div class="cv-card__contacts">
+            <span>
+              GitHub:
+              <a href="https://github.com/matheuruales" target="_blank" rel="noopener noreferrer">
+                matheuruales
+              </a>
+            </span>
+          </div>
+        </header>
+        <div class="cv-section">
+          <h4>Perfil</h4>
+          <p>
+            Soy estudiante de Ingenieria de Software con enfoque en construir productos y
+            prototipos integrando frontend, backend y automatizacion. He trabajado en
+            proyectos de realidad virtual aplicada a educacion en salud y en integraciones
+            para agentes de IA orientadas a mensajeria y workflows. Me adapto rapido entre
+            desarrollo web, scripts y despliegues basicos, con foco en ejecucion y mejora
+            continua.
+          </p>
+        </div>
+        <div class="cv-section">
+          <h4>Habilidades tecnicas</h4>
+          <div class="cv-grid">
+            <div>
+              <h5>Frontend</h5>
+              <ul>
+                <li>HTML, CSS, JavaScript</li>
+                <li>Construccion de interfaces web y mejoras de UX/UI</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Backend / Scripts</h5>
+              <ul>
+                <li>Python, Java</li>
+                <li>Desarrollo de logica, APIs y utilidades</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Stack usado</h5>
+              <ul>
+                <li>React + TypeScript</li>
+                <li>Java + Spring Boot</li>
+                <li>PostgreSQL, Firebase (auth)</li>
+                <li>n8n (automatizaciones)</li>
+              </ul>
+            </div>
+            <div>
+              <h5>IA / Agentes</h5>
+              <ul>
+                <li>Integracion con APIs de chat</li>
+                <li>Definicion de capabilities e intenciones</li>
+                <li>Automatizacion con webhooks</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Visualizacion</h5>
+              <ul>
+                <li>Chart.js (graficos con datos CSV)</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Herramientas / Infra</h5>
+              <ul>
+                <li>Git, GitLab</li>
+                <li>SSH, Nginx</li>
+                <li>Integraciones tipo Chatwoot</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h4>Proyectos destacados</h4>
+          <div class="cv-project">
+            <h5>PulmoMed — Simulador VR avanzado para aprendizaje de cancer de pulmon (Investigacion, UCC)</h5>
+            <ul class="cv-project-list">
+              <li>Proyecto de investigacion orientado a estudiantes y profesionales de salud.</li>
+              <li>Integracion de VR y componentes de IA para simular crecimiento y metastasis tumoral.</li>
+              <li>Coordinacion de equipo de 3 integrantes con profesor asesor y personal de salud.</li>
+            </ul>
+          </div>
+          <div class="cv-project">
+            <h5>MimiPet — Plataforma para registrar y gestionar informacion de mascotas (Web/App + IA)</h5>
+            <ul class="cv-project-list">
+              <li>Diseno de flujos por pasos para registro de datos de salud y seguimiento.</li>
+              <li>Estructura de modulos con autenticacion usando Firebase.</li>
+            </ul>
+          </div>
+          <div class="cv-project">
+            <h5>Conexion TikTok Inbox + Agente de IA (Integracion / Mensajeria)</h5>
+            <ul class="cv-project-list">
+              <li>Analisis de conversaciones para identificar capacidades e intenciones frecuentes.</li>
+              <li>Integracion de servicios tipo inbox/CRM y webhooks (ej. Chatwoot).</li>
+            </ul>
+          </div>
+          <div class="cv-project">
+            <h5>Bitcoin Predictor Pro — Interfaz web de predicciones con graficos (Frontend)</h5>
+            <ul class="cv-project-list">
+              <li>Frontend en HTML/CSS/JS con Chart.js para visualizar datos historicos y predichos.</li>
+              <li>Scripts en Python para prediccion con variabilidad y volatilidad realista.</li>
+            </ul>
+          </div>
+          <div class="cv-project">
+            <h5>pichu_run — Juego estilo Temple Run en Java</h5>
+            <ul class="cv-project-list">
+              <li>Juego 2D con generacion de obstaculos y control de aleatoriedad.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h4>Educacion</h4>
+          <ul class="cv-list">
+            <li>
+              Universidad Cooperativa de Colombia (UCC), Campus Pasto — Ingenieria de Software
+              (5 semestre, en curso).
+            </li>
+          </ul>
+        </div>
+      </article>
+    `,
+    luis: `
+      <article class="cv-card">
+        <header class="cv-card__header">
+          <div>
+            <h3 class="cv-card__name">Luis Castillo</h3>
+            <p class="cv-card__meta">Colombia</p>
+          </div>
+          <div class="cv-card__contacts">
+            <span>Tel: <a href="tel:+573137555023">+57 313 755 5023</a></span>
+            <span>Email: <a href="mailto:luisestebancastillopedroza90@gmail.com">luisestebancastillopedroza90@gmail.com</a></span>
+            <span>
+              LinkedIn:
+              <a href="https://linkedin.com/in/tuusuario" target="_blank" rel="noopener noreferrer">
+                linkedin.com/in/tuusuario
+              </a>
+            </span>
+            <span>
+              GitHub:
+              <a href="https://github.com/lxiscxstillo" target="_blank" rel="noopener noreferrer">
+                github.com/lxiscxstillo
+              </a>
+            </span>
+          </div>
+        </header>
+        <div class="cv-section">
+          <h4>Perfil profesional</h4>
+          <p>
+            Estudiante de Ingenieria con enfasis en desarrollo de software, tecnologias
+            interactivas y arquitectura de sistemas. Experiencia en investigacion aplicada
+            dentro de la Universidad Cooperativa de Colombia, participando en el diseno y
+            desarrollo de un simulador en realidad aumentada orientado a la ensenanza del
+            desarrollo fetal en estudiantes de medicina.
+          </p>
+          <p>
+            Interesado en el desarrollo de aplicaciones web modernas, soluciones
+            multiplataforma y sistemas interactivos con enfoque en experiencia de usuario.
+            Con bases solidas en modelado de datos, diseno de bases de datos relacionales,
+            principios de arquitectura de software y control de versiones.
+          </p>
+        </div>
+        <div class="cv-section">
+          <h4>Formacion academica</h4>
+          <ul class="cv-list">
+            <li>Ingenieria de Software / Ingenieria de Sistemas (En curso).</li>
+            <li>Universidad Cooperativa de Colombia, Colombia.</li>
+          </ul>
+          <h4>Areas de formacion relevantes</h4>
+          <ul class="cv-list">
+            <li>Programacion y estructuras de datos.</li>
+            <li>Bases de datos relacionales.</li>
+            <li>Ingenieria de software.</li>
+            <li>Arquitectura basica del computador.</li>
+            <li>Gestion de proyectos de software.</li>
+            <li>Modelado de sistemas.</li>
+            <li>Desarrollo web.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Experiencia en investigacion</h4>
+          <div class="cv-project">
+            <h5>Desarrollador de Software — Proyecto de Simulador en Realidad Aumentada</h5>
+            <p>Semillero de Investigacion, Universidad Cooperativa de Colombia.</p>
+            <ul class="cv-project-list">
+              <li>Diseno e implementacion del entorno interactivo usando Unity.</li>
+              <li>Programacion de comportamientos y logica de interaccion para simulaciones dinamicas.</li>
+              <li>Modelado de variables modificables que afectan el desarrollo fetal.</li>
+              <li>Estructuracion de la arquitectura del proyecto dentro del motor grafico.</li>
+              <li>Aplicacion de TIC como herramienta pedagogica.</li>
+              <li>Pruebas funcionales y ajustes de usabilidad.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h4>Proyectos academicos relevantes</h4>
+          <div class="cv-project">
+            <h5>Simulador de Desarrollo Fetal en Realidad Aumentada</h5>
+            <ul class="cv-project-list">
+              <li>Desarrollo en Unity con interaccion en tiempo real.</li>
+              <li>Diseno modular para escalabilidad de escenarios.</li>
+              <li>Enfoque en aprendizaje inmersivo y didactico.</li>
+            </ul>
+          </div>
+          <div class="cv-project">
+            <h5>Desarrollo de Aplicaciones Web Modernas</h5>
+            <ul class="cv-project-list">
+              <li>Landing pages responsivas con HTML5 y CSS3.</li>
+              <li>Aplicaciones con Next.js y TailwindCSS.</li>
+              <li>Manejo de rutas, componentes y renderizado.</li>
+              <li>Control de versiones con Git y GitHub.</li>
+            </ul>
+          </div>
+          <div class="cv-project">
+            <h5>Modelado y Gestion de Bases de Datos</h5>
+            <ul class="cv-project-list">
+              <li>Modelos entidad-relacion y normalizacion hasta 3FN.</li>
+              <li>Implementacion en PostgreSQL con comandos DDL.</li>
+              <li>Definicion de claves y relaciones 1:1, 1:N y N:M.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h4>Habilidades tecnicas</h4>
+          <div class="cv-grid">
+            <div>
+              <h5>Lenguajes</h5>
+              <ul>
+                <li>JavaScript</li>
+                <li>SQL</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Tecnologias</h5>
+              <ul>
+                <li>Next.js</li>
+                <li>TailwindCSS</li>
+                <li>Unity</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Bases de datos</h5>
+              <ul>
+                <li>PostgreSQL</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Control de versiones</h5>
+              <ul>
+                <li>Git</li>
+                <li>GitHub</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Herramientas</h5>
+              <ul>
+                <li>Visual Studio Code</li>
+              </ul>
+            </div>
+            <div>
+              <h5>Conceptos</h5>
+              <ul>
+                <li>Arquitectura de software</li>
+                <li>Programacion orientada a objetos</li>
+                <li>Diseno responsivo</li>
+                <li>Integracion de sistemas</li>
+                <li>Modelado relacional</li>
+                <li>Gestion del ciclo de vida del software</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h4>Competencias profesionales</h4>
+          <ul class="cv-list">
+            <li>Analisis y resolucion estructurada de problemas.</li>
+            <li>Traduccion de requerimientos funcionales en soluciones tecnicas.</li>
+            <li>Trabajo colaborativo en entornos academicos.</li>
+            <li>Investigacion aplicada en tecnologia educativa.</li>
+            <li>Aprendizaje autonomo y actualizacion constante.</li>
+            <li>Organizacion y gestion del tiempo.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Objetivo profesional</h4>
+          <p>
+            Desarrollarme como ingeniero de software participando en proyectos de alto impacto
+            tecnologico, especialmente en desarrollo web, tecnologias interactivas o soluciones
+            educativas digitales. Busco aportar pensamiento analitico y compromiso con la calidad
+            del software.
+          </p>
+        </div>
+      </article>
+    `,
+    bayron: `
+      <article class="cv-card">
+        <header class="cv-card__header">
+          <div>
+            <h3 class="cv-card__name">Bayron Felipe Jaramillo Galindres</h3>
+            <p class="cv-card__subtitle">
+              Estudiante de Ingenieria de Software con enfoque analitico y orientacion a resultados.
+            </p>
+            <p class="cv-card__meta">Universidad Cooperativa de Colombia, Campus Pasto</p>
+          </div>
+        </header>
+        <div class="cv-section">
+          <h4>Resumen</h4>
+          <p>
+            Estudiante con solida capacidad para el trabajo en equipo y rapida adaptacion a nuevas
+            tecnologias, orientado a la resolucion eficiente de problemas e integracion de buenas
+            practicas de desarrollo.
+          </p>
+        </div>
+        <div class="cv-section">
+          <h4>Experiencia</h4>
+          <div class="cv-project">
+            <h5>Encargado Administrativo y de Operaciones — Lubricantes y Vulcanizadora Narino</h5>
+            <p>Tunquerres, Narino (2017 - actual).</p>
+            <ul class="cv-project-list">
+              <li>Mantenimiento y reparacion de vehiculos.</li>
+              <li>Atencion al cliente y gestion de inventarios.</li>
+              <li>Coordinacion con proveedores.</li>
+              <li>Facturacion electronica y manejo de software de ventas.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h4>Proyectos y academia</h4>
+          <ul class="cv-list">
+            <li>Aplicacion VR educativa sobre gestacion usando Unity y gafas Meta Quest.</li>
+            <li>Pagina web para floristeria con HTML5, CSS3 y JavaScript.</li>
+            <li>Juego interactivo con Arduino y sensores sonoros y luminosos.</li>
+            <li>Simulacion de trayectoria balistica en Python con NumPy y Matplotlib.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Habilidades tecnicas</h4>
+          <div class="cv-tags">
+            <span class="cv-tag">Python</span>
+            <span class="cv-tag">Java</span>
+            <span class="cv-tag">Django</span>
+            <span class="cv-tag">Pandas</span>
+            <span class="cv-tag">NumPy</span>
+            <span class="cv-tag">SQLite</span>
+            <span class="cv-tag">Docker</span>
+            <span class="cv-tag">Git</span>
+            <span class="cv-tag">GitHub</span>
+            <span class="cv-tag">HTML5</span>
+            <span class="cv-tag">CSS3</span>
+            <span class="cv-tag">Unity</span>
+            <span class="cv-tag">Blender</span>
+            <span class="cv-tag">Oculus Rift</span>
+            <span class="cv-tag">Arduino Uno</span>
+            <span class="cv-tag">Azure Boards</span>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h4>Educacion</h4>
+          <ul class="cv-list">
+            <li>Ingenieria de Software, Universidad Cooperativa de Colombia (5 semestre, en curso).</li>
+            <li>Tecnico en Contabilizacion de Operaciones Comerciales (SENA).</li>
+            <li>Bachillerato — Instituto Teresiano de Tunquerres.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Competencias blandas</h4>
+          <ul class="cv-list">
+            <li>Pensamiento analitico y toma de decisiones bajo presion.</li>
+            <li>Adaptabilidad y organizacion del tiempo.</li>
+            <li>Proactividad y trabajo en equipo.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Datos personales</h4>
+          <ul class="cv-list">
+            <li>Nacido el 11 de junio de 2004.</li>
+            <li>Intereses: tecnologia, mecanica automotriz, actividad fisica y lectura.</li>
+          </ul>
+        </div>
+      </article>
+    `
+  };
+
+  const init = () => {
+    if (!toggleButton || !menu || !panel) return;
+
+    toggleButton.addEventListener('click', handleToggle);
+    options.forEach(option => {
+      option.addEventListener('click', () => handleSelect(option.dataset.cv));
+    });
+
+    document.addEventListener('click', handleOutsideClick);
+    document.addEventListener('keydown', handleKeydown);
+  };
+
+  const handleToggle = () => {
+    const isOpen = menu.classList.contains('is-open');
+    setMenuOpen(!isOpen);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (!menu.classList.contains('is-open')) return;
+    if (menu.contains(event.target) || toggleButton.contains(event.target)) return;
+    setMenuOpen(false);
+  };
+
+  const handleKeydown = (event) => {
+    if (event.key === 'Escape') {
+      setMenuOpen(false);
+    }
+  };
+
+  const setMenuOpen = (open) => {
+    menu.classList.toggle('is-open', open);
+    toggleButton.setAttribute('aria-expanded', open);
+  };
+
+  const handleSelect = (key) => {
+    const html = CV_CONTENT[key];
+    if (!html) return;
+
+    panel.innerHTML = html;
+    document.body.setAttribute('data-view', 'cv-only');
+
+    options.forEach(option => {
+      option.classList.toggle('is-active', option.dataset.cv === key);
+    });
+
+    setMenuOpen(false);
+
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const clearCvPanel = () => {
+    if (!panel) return;
+    panel.innerHTML = '';
+    options.forEach(option => option.classList.remove('is-active'));
   };
 
   return { init };
@@ -360,19 +896,6 @@ const FormValidationModule = (() => {
     if (!successDiv) {
       successDiv = document.createElement('div');
       successDiv.className = 'form-success';
-      successDiv.style.cssText = `
-        position: fixed;
-        top: 2rem;
-        right: 2rem;
-        background-color: #10b981;
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        animation: slideInLeft 0.3s ease-out;
-        font-weight: 500;
-      `;
       successDiv.textContent = '✓ Solicitud enviada exitosamente. Te contactaremos pronto.';
       document.body.appendChild(successDiv);
     }
@@ -596,6 +1119,8 @@ const ModalModule = (() => {
 document.addEventListener('DOMContentLoaded', () => {
   // Inicializar todos los módulos
   NavigationModule.init();
+  ThemeModule.init();
+  CvModule.init();
   SmoothScrollModule.init();
   FormValidationModule.init();
   ScrollAnimationModule.init();
