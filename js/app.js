@@ -123,6 +123,7 @@ const NavigationModule = (() => {
         if (href.startsWith('#')) {
           e.preventDefault();
           document.body.removeAttribute('data-view');
+          clearCvPanel();
           const targetId = href.substring(1);
           const targetElement = document.getElementById(targetId);
           
@@ -660,6 +661,12 @@ const CvModule = (() => {
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  const clearCvPanel = () => {
+    if (!panel) return;
+    panel.innerHTML = '';
+    options.forEach(option => option.classList.remove('is-active'));
   };
 
   return { init };
