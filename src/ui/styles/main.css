@@ -86,6 +86,7 @@
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-theme: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-elevated: 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 html {
@@ -481,6 +482,35 @@ html[data-theme="dark"] .hover-spotlight::before {
 
 .hover-spotlight:hover::before {
   opacity: 1;
+}
+
+.elevated-3d {
+  transform: translateZ(0);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--transition-elevated),
+    box-shadow var(--transition-elevated);
+}
+
+@media (hover: hover) {
+  .elevated-3d:hover,
+  .elevated-3d:focus-within {
+    transform: perspective(900px) translateY(-6px) rotateX(2deg);
+    box-shadow: var(--shadow-lg);
+    will-change: transform;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elevated-3d {
+    transform: none;
+    transition: none;
+  }
+
+  .elevated-3d:hover,
+  .elevated-3d:focus-within {
+    transform: none;
+  }
 }
 
 .ripple {
@@ -979,7 +1009,6 @@ body[data-view="cv-only"] #cv {
 
 #lineup article:hover {
   background-color: var(--color-surface-muted);
-  transform: translateY(-4px);
 }
 
 #lineup article h3 {
@@ -1074,8 +1103,6 @@ body[data-view="cv-only"] #cv {
 }
 
 #beneficios article:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
 }
 
 #beneficios article img {
@@ -1142,7 +1169,6 @@ body[data-view="cv-only"] #cv {
 }
 
 #caracteristicas article:hover {
-  transform: translateY(-4px);
 }
 
 #caracteristicas article img {
@@ -1211,8 +1237,6 @@ body[data-view="cv-only"] #cv {
 }
 
 #testimonios article:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
 }
 
 #testimonios article h3 {

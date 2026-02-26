@@ -241,6 +241,35 @@ const CvModule = (() => {
           </div>
         </header>
         <div class="cv-section">
+          <h4>Datos personales</h4>
+          <ul class="cv-list">
+            <li>Nombre completo: Johnatan Matheu Ruales Galvis.</li>
+            <li>Rol: Estudiante de Ingenieria de Software.</li>
+            <li>Ubicacion: Campus Pasto, Colombia.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Formacion</h4>
+          <ul class="cv-list">
+            <li>Ingenieria de Software (en curso) — Universidad Cooperativa de Colombia.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Repositorios</h4>
+          <ul class="cv-list">
+            <li>
+              <a href="https://github.com/matheuruales" target="_blank" rel="noopener noreferrer">
+                Perfil GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/matheuruales?tab=repositories" target="_blank" rel="noopener noreferrer">
+                Repositorios publicos
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="cv-section">
           <h4>Perfil</h4>
           <p>
             Soy estudiante de Ingenieria de Software con enfoque en construir productos y
@@ -650,7 +679,7 @@ const CvModule = (() => {
     if (!html) return;
 
     panel.innerHTML = html;
-    panel.querySelector('.cv-card')?.classList.add('hover-spotlight');
+    panel.querySelector('.cv-card')?.classList.add('hover-spotlight', 'elevated-3d');
     document.body.setAttribute('data-view', 'cv-only');
 
     options.forEach(option => {
@@ -1040,6 +1069,18 @@ const InteractionModule = (() => {
 
     document.querySelectorAll(spotlightSelectors.join(',')).forEach(element => {
       element.classList.add('hover-spotlight');
+    });
+
+    const elevatedSelectors = [
+      '#lineup article',
+      '#beneficios article',
+      '#caracteristicas article',
+      '#testimonios article',
+      '.cv-card'
+    ];
+
+    document.querySelectorAll(elevatedSelectors.join(',')).forEach(element => {
+      element.classList.add('elevated-3d');
     });
   };
 
