@@ -28,6 +28,10 @@
   /* Feedback */
   --color-danger: #dc2626;
   --color-success: #10b981;
+  --color-field-invalid-bg: #fef2f2;
+  --color-field-valid-bg: #f0fdf4;
+  --color-field-invalid-ring: rgba(220, 38, 38, 0.1);
+  --color-field-valid-ring: rgba(16, 185, 129, 0.1);
 
   /* Bordes y sombras */
   --color-border: #e5e5e5;
@@ -104,6 +108,10 @@ html[data-theme="dark"] {
   --color-accent-dark: #2563eb;
   --color-danger: #fb7185;
   --color-success: #4ade80;
+  --color-field-invalid-bg: rgba(251, 113, 133, 0.18);
+  --color-field-valid-bg: rgba(74, 222, 128, 0.18);
+  --color-field-invalid-ring: rgba(251, 113, 133, 0.35);
+  --color-field-valid-ring: rgba(74, 222, 128, 0.3);
   --color-border: #273244;
   --color-border-light: #232b3e;
   --color-header-bg: rgba(16, 22, 36, 0.85);
@@ -1163,38 +1171,29 @@ textarea:focus {
 input.field-invalid,
 select.field-invalid,
 textarea.field-invalid {
-  border-color: #dc2626;
-  background-color: #fef2f2;
+  border-color: var(--color-danger);
+  background-color: var(--color-field-invalid-bg);
 }
 
 input.field-invalid:focus,
 select.field-invalid:focus,
 textarea.field-invalid:focus {
-  border-color: #dc2626;
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px var(--color-field-invalid-ring);
 }
 
 input.field-valid,
 select.field-valid,
 textarea.field-valid {
-  border-color: #10b981;
-  background-color: #f0fdf4;
+  border-color: var(--color-success);
+  background-color: var(--color-field-valid-bg);
 }
 
 input.field-valid:focus,
 select.field-valid:focus,
 textarea.field-valid:focus {
-  border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-}
-
-.field-error {
-  display: block;
-  color: #dc2626;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  animation: slideInLeft 0.3s ease-out;
-  font-weight: 500;
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px var(--color-field-valid-ring);
 }
 
 textarea {
@@ -1324,6 +1323,28 @@ footer > p {
 /* ============================================
    ANIMACIONES
    ============================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
 
 @keyframes fadeInUp {
   from {
