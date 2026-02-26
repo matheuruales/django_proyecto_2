@@ -96,38 +96,38 @@ html {
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --color-bg-primary: #101624;
-  --color-bg-secondary: #181f2f;
-  --color-bg-tertiary: #232b3e;
-  --color-surface: rgba(24, 31, 47, 0.85);
-  --color-surface-muted: rgba(35, 43, 62, 0.7);
-  --color-text-primary: #f3f6fa;
-  --color-text-secondary: #b6c2e2;
-  --color-text-tertiary: #7b8dbb;
-  --color-accent: #60a5fa;
-  --color-accent-light: #a5b4fc;
-  --color-accent-dark: #2563eb;
-  --color-danger: #fb7185;
-  --color-success: #4ade80;
-  --color-field-invalid-bg: rgba(251, 113, 133, 0.18);
-  --color-field-valid-bg: rgba(74, 222, 128, 0.18);
-  --color-field-invalid-ring: rgba(251, 113, 133, 0.35);
-  --color-field-valid-ring: rgba(74, 222, 128, 0.3);
-  --color-border: #273244;
-  --color-border-light: #232b3e;
-  --color-header-bg: rgba(16, 22, 36, 0.85);
-  --color-hero-gradient-start: #181f2f;
-  --color-hero-gradient-end: #232b3e;
-  --color-testimonial-gradient-start: #232b3e;
-  --color-testimonial-gradient-end: #181f2f;
-  --color-input-bg: rgba(35, 43, 62, 0.85);
-  --color-focus-ring: rgba(96, 165, 250, 0.35);
-  --shadow-sm: 0 2px 8px rgba(24, 31, 47, 0.25);
-  --shadow-md: 0 6px 16px rgba(24, 31, 47, 0.35);
-  --shadow-lg: 0 16px 32px rgba(24, 31, 47, 0.45);
-  --shadow-xl: 0 32px 48px rgba(24, 31, 47, 0.55);
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #0b0b0f;
+  --color-bg-tertiary: #111114;
+  --color-surface: #1d1d1f;
+  --color-surface-muted: #111114;
+  --color-text-primary: rgba(255, 255, 255, 0.92);
+  --color-text-secondary: rgba(255, 255, 255, 0.72);
+  --color-text-tertiary: rgba(255, 255, 255, 0.56);
+  --color-accent: #2997ff;
+  --color-accent-light: #5ab1ff;
+  --color-accent-dark: #0071e3;
+  --color-danger: #ff6b6b;
+  --color-success: #34d399;
+  --color-field-invalid-bg: rgba(255, 107, 107, 0.16);
+  --color-field-valid-bg: rgba(52, 211, 153, 0.16);
+  --color-field-invalid-ring: rgba(255, 107, 107, 0.28);
+  --color-field-valid-ring: rgba(52, 211, 153, 0.24);
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-light: rgba(255, 255, 255, 0.08);
+  --color-header-bg: rgba(0, 0, 0, 0.85);
+  --color-hero-gradient-start: #000000;
+  --color-hero-gradient-end: #0b0b0f;
+  --color-testimonial-gradient-start: #0b0b0f;
+  --color-testimonial-gradient-end: #000000;
+  --color-input-bg: #1d1d1f;
+  --color-focus-ring: rgba(41, 151, 255, 0.35);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 6px 14px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 14px 28px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.6);
   /* Glassmorphism effect */
-  --glass-blur: blur(18px);
+  --glass-blur: blur(20px);
 }
 
 /* ============================================
@@ -312,7 +312,7 @@ header.scrolled {
 }
 
 html[data-theme="dark"] header.scrolled {
-  background-color: rgba(16, 22, 36, 0.95);
+  background-color: rgba(0, 0, 0, 0.92);
 }
 
 header > div {
@@ -449,7 +449,7 @@ header nav a.active::after {
 html[data-theme="dark"] .interactive-surface::after {
   background: radial-gradient(
     circle at top left,
-    rgba(96, 165, 250, 0.25),
+    rgba(41, 151, 255, 0.22),
     transparent 60%
   );
 }
@@ -488,7 +488,7 @@ html[data-theme="dark"] .interactive-surface::after {
 html[data-theme="dark"] .hover-spotlight::before {
   background: radial-gradient(
     circle at top,
-    rgba(96, 165, 250, 0.18),
+    rgba(41, 151, 255, 0.2),
     transparent 60%
   );
 }
@@ -635,7 +635,7 @@ html[data-theme="dark"] .ripple-effect {
   font-size: var(--font-size-base);
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 24px 0 rgba(96, 165, 250, 0.08);
+  box-shadow: 0 4px 24px 0 rgba(41, 151, 255, 0.12);
   backdrop-filter: var(--glass-blur, none);
   transition: all var(--transition-base);
   position: relative;
@@ -1504,7 +1504,7 @@ button[type="submit"].btn-loading {
 
 /* Dark mode overlay adjustment */
 html[data-theme="dark"] .form-blur-overlay {
-  background-color: rgba(16, 22, 36, 0.8);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
 @media (max-width: 768px) {
@@ -1596,7 +1596,7 @@ footer > p {
 }
 
 html[data-theme="dark"] .interactive-surface::after {
-  background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.25), transparent 60%);
+  background: radial-gradient(circle at top left, rgba(41, 151, 255, 0.22), transparent 60%);
 }
 
 .interactive-surface:hover {
@@ -1625,7 +1625,7 @@ html[data-theme="dark"] .interactive-surface::after {
 }
 
 html[data-theme="dark"] .hover-spotlight::before {
-  background: radial-gradient(circle at top, rgba(96, 165, 250, 0.18), transparent 60%);
+  background: radial-gradient(circle at top, rgba(41, 151, 255, 0.2), transparent 60%);
 }
 
 .hover-spotlight:hover::before {
