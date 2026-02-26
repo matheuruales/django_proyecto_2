@@ -916,14 +916,15 @@ const FormValidationModule = (() => {
 // MODULE: Intersection Observer (Scroll Animations)
 // ============================================
 const ScrollAnimationModule = (() => {
+  let observer = null;
+
   const init = () => {
     if (!('IntersectionObserver' in window)) return;
 
-    const observer = new IntersectionObserver((entries) => {
+    observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Agregar animación al elemento
-          entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+          entry.target.classList.add('is-visible');
           observer.unobserve(entry.target);
         }
       });
@@ -934,28 +935,22 @@ const ScrollAnimationModule = (() => {
 
     // Observar elementos animables
     const animatableElements = document.querySelectorAll(
-      'section article, #lineup h2, #beneficios article, #caracteristicas article, #testimonios article, #contacto form'
+      'section article, section h2, #contacto form, img'
     );
+    observeNewElements(animatableElements);
+  };
 
-    animatableElements.forEach(element => {
-      // Solo agregar si no tiene animación inline ya
-      if (!element.style.animation) {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        observer.observe(element);
-      }
-    });
+  const observeNewElements = (elements) => {
+    if (!observer || !elements) return;
 
-    // También animar imágenes
-    const images = document.querySelectorAll('img');
-    images.forEach(img => {
-      if (!img.style.animation) {
-        observer.observe(img);
-      }
+    elements.forEach(element => {
+      if (!element) return;
+      element.classList.add('reveal');
+      observer.observe(element);
     });
   };
 
-  return { init };
+  return { init, observeNewElements };
 })();
 
 // ============================================
