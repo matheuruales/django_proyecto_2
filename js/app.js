@@ -877,12 +877,18 @@ const FormValidationModule = (() => {
       // Desabilitar formulario durante envío
       disableFormDuringSubmit();
       
-      // Mostrar loader
-      showLoader();
+      // Agregar animación de carga al botón
+      submitBtn.classList.add('btn-loading');
+      submitBtn.innerHTML = '<span class="loader-spinner-btn"></span> Enviando...';
+
+      // Mostrar overlay blanco con blur
+      showBlurOverlay();
 
       // Simular envío (2 segundos)
       setTimeout(() => {
-        hideLoader();
+        hideBlurOverlay();
+        submitBtn.classList.remove('btn-loading');
+        submitBtn.innerHTML = 'Enviar solicitud';
         showSuccessMessage();
 
         // Resetear formulario después de 1.5 segundos
@@ -929,6 +935,20 @@ const FormValidationModule = (() => {
     if (loader) {
       loader.classList.add('fade-out');
       setTimeout(() => loader.remove(), 300);
+    }
+  };
+
+  const showBlurOverlay = () => {
+    const overlay = document.createElement('div');
+    overlay.className = 'form-blur-overlay';
+    form.appendChild(overlay);
+  };
+
+  const hideBlurOverlay = () => {
+    const overlay = document.querySelector('.form-blur-overlay');
+    if (overlay) {
+      overlay.classList.add('fade-out');
+      setTimeout(() => overlay.remove(), 300);
     }
   };
 
