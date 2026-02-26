@@ -1150,19 +1150,6 @@ textarea {
   font-family: inherit;
 }
 
-/* Placeholder styling */
-input::placeholder,
-textarea::placeholder {
-  color: var(--color-text-tertiary);
-  font-style: italic;
-  opacity: 0.7;
-}
-
-input:focus::placeholder,
-textarea:focus::placeholder {
-  opacity: 0.4;
-}
-
 input[type="text"]:focus,
 input[type="email"]:focus,
 select:focus,
@@ -1170,6 +1157,17 @@ textarea:focus {
   outline: none;
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+/* Placeholder styling - ONLY for textarea mensaje */
+#mensaje::placeholder {
+  color: var(--color-text-tertiary);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+#mensaje:focus::placeholder {
+  opacity: 0.4;
 }
 
 /* Estados de validación */
