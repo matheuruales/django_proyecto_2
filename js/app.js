@@ -650,6 +650,7 @@ const CvModule = (() => {
     if (!html) return;
 
     panel.innerHTML = html;
+    panel.querySelector('.cv-card')?.classList.add('hover-spotlight');
     document.body.setAttribute('data-view', 'cv-only');
 
     options.forEach(option => {
@@ -1012,6 +1013,74 @@ const ScrollAnimationModule = (() => {
 })();
 
 // ============================================
+// MODULE: Interaction Styles
+// ============================================
+const InteractionModule = (() => {
+  const init = () => {
+    const interactiveSelectors = [
+      '#hero a',
+      '#lineup article a',
+      '#contacto button[type="submit"]',
+      '.theme-toggle',
+      '.cv-toggle',
+      '#cv-menu button'
+    ];
+
+    document.querySelectorAll(interactiveSelectors.join(',')).forEach(element => {
+      element.classList.add('interactive-surface');
+      element.setAttribute('data-ripple', 'true');
+    });
+
+    const spotlightSelectors = [
+      '#lineup article',
+      '#beneficios article',
+      '#caracteristicas article',
+      '#testimonios article'
+    ];
+
+    document.querySelectorAll(spotlightSelectors.join(',')).forEach(element => {
+      element.classList.add('hover-spotlight');
+    });
+  };
+
+  return { init };
+})();
+
+// ============================================
+// MODULE: Ripple Effect
+// ============================================
+const RippleModule = (() => {
+  const init = () => {
+    const targets = document.querySelectorAll('[data-ripple]');
+    targets.forEach(target => {
+      target.classList.add('ripple');
+      target.addEventListener('click', createRipple);
+    });
+  };
+
+  const createRipple = (event) => {
+    const target = event.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple-effect';
+
+    const size = Math.max(rect.width, rect.height);
+    const clientX = event.clientX || rect.left + rect.width / 2;
+    const clientY = event.clientY || rect.top + rect.height / 2;
+
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${clientY - rect.top - size / 2}px`;
+
+    target.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove());
+  };
+
+  return { init };
+})();
+
+// ============================================
 // MODULE: CTA Button Interactions
 // ============================================
 const CTAModule = (() => {
@@ -1208,6 +1277,8 @@ document.addEventListener('DOMContentLoaded', () => {
   NavigationModule.init();
   ThemeModule.init();
   CvModule.init();
+  InteractionModule.init();
+  RippleModule.init();
   SmoothScrollModule.init();
   FormValidationModule.init();
   ScrollAnimationModule.init();
