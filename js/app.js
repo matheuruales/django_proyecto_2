@@ -658,6 +658,10 @@ const CvModule = (() => {
 
     setMenuOpen(false);
 
+    ScrollAnimationModule.observeNewElements(
+      panel.querySelectorAll('.cv-card, .cv-section, .cv-project, .cv-tag')
+    );
+
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
