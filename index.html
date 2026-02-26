@@ -24,7 +24,47 @@
           <li><a href="#beneficios">Beneficios</a></li>
           <li><a href="#caracteristicas">Características</a></li>
           <li><a href="#testimonios">Testimonios</a></li>
+          <li class="nav-cv">
+            <button
+              id="cv-toggle"
+              class="cv-toggle"
+              type="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              CV
+            </button>
+            <ul id="cv-menu" class="cv-menu" role="menu" aria-label="Lista de CV">
+              <li role="none">
+                <button type="button" role="menuitem" data-cv="matheu">
+                  Dev 1 Matheu
+                </button>
+              </li>
+              <li role="none">
+                <button type="button" role="menuitem" data-cv="luis">
+                  Dev 2 Luis
+                </button>
+              </li>
+              <li role="none">
+                <button type="button" role="menuitem" data-cv="bayron">
+                  Dev 3 Bayron
+                </button>
+              </li>
+            </ul>
+          </li>
           <li><a href="#contacto">Contacto</a></li>
+          <li>
+            <button
+              id="theme-toggle"
+              class="theme-toggle"
+              type="button"
+              aria-pressed="false"
+              aria-label="Cambiar a modo oscuro"
+            >
+              <span class="theme-toggle__icon" aria-hidden="true"></span>
+              <span class="theme-toggle__text" data-theme-text>Modo oscuro</span>
+            </button>
+          </li>
         </ul>
       </nav>
     </header>
@@ -53,6 +93,12 @@
             height="395"
           />
         </article>
+      </section>
+
+      <section id="cv" aria-label="CV del equipo">
+        <div class="cv-wrap">
+          <div id="cv-panel" class="cv-panel" aria-live="polite"></div>
+        </div>
       </section>
 
       <!-- Sección de lineup inspirada en la comparación de Apple -->
@@ -295,7 +341,7 @@
             <p>
               <label for="modelo">Modelo de interés</label>
               <select id="modelo" name="modelo" required>
-                <option value="">Selecciona una opción</option>
+                <option value="">Selecciona un modelo</option>
                 <option value="iphone-17-pro">iPhone 17 Pro</option>
                 <option value="iphone-air">iPhone Air</option>
                 <option value="iphone-17">iPhone 17</option>
@@ -306,7 +352,7 @@
 
             <p>
               <label for="mensaje">Mensaje</label>
-              <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+              <textarea id="mensaje" name="mensaje" rows="5" placeholder="Agrega información adicional para tu pedido (color, almacenamiento, promociones de interés, etc)" required></textarea>
             </p>
 
             <p>
