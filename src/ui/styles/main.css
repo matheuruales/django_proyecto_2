@@ -367,7 +367,8 @@ header nav a {
   color: var(--color-text-primary);
   transition: color var(--transition-fast), opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 1;
-  display: inline-block;
+  display: inline-flex;
+  position: relative;
 }
 
 header.scrolled nav a {
@@ -378,6 +379,126 @@ header.scrolled nav a {
 header nav a:hover {
   color: var(--color-accent);
   opacity: 1;
+}
+
+header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-fast);
+}
+
+header nav a:hover::after {
+  transform: scaleX(1);
+}
+
+/* ============================================
+   INTERACCIONES
+   ============================================ */
+
+.interactive-surface {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    background-color var(--transition-base),
+    color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.interactive-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at top left,
+    rgba(255, 255, 255, 0.35),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+html[data-theme="dark"] .interactive-surface::after {
+  background: radial-gradient(
+    circle at top left,
+    rgba(96, 165, 250, 0.25),
+    transparent 60%
+  );
+}
+
+.interactive-surface:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.interactive-surface:hover::after {
+  opacity: 1;
+}
+
+.hover-spotlight {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.hover-spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at top,
+    rgba(0, 113, 227, 0.08),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+html[data-theme="dark"] .hover-spotlight::before {
+  background: radial-gradient(
+    circle at top,
+    rgba(96, 165, 250, 0.18),
+    transparent 60%
+  );
+}
+
+.hover-spotlight:hover::before {
+  opacity: 1;
+}
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: rgba(0, 0, 0, 0.15);
+  animation: ripple 600ms ease-out;
+  pointer-events: none;
+}
+
+html[data-theme="dark"] .ripple-effect {
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .nav-cv {
@@ -1409,6 +1530,17 @@ footer > p {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
   }
 }
 
