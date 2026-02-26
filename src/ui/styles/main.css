@@ -1174,28 +1174,28 @@ textarea:focus {
 input.field-invalid,
 select.field-invalid,
 textarea.field-invalid {
-  border-color: #dc2626;
-  background-color: #fef2f2;
+  border-color: var(--color-danger);
+  background-color: var(--color-input-bg);
 }
 
 input.field-invalid:focus,
 select.field-invalid:focus,
 textarea.field-invalid:focus {
-  border-color: #dc2626;
+  border-color: var(--color-danger);
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 input.field-valid,
 select.field-valid,
 textarea.field-valid {
-  border-color: #10b981;
-  background-color: #f0fdf4;
+  border-color: var(--color-success);
+  background-color: var(--color-input-bg);
 }
 
 input.field-valid:focus,
 select.field-valid:focus,
 textarea.field-valid:focus {
-  border-color: #10b981;
+  border-color: var(--color-success);
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
@@ -1237,6 +1237,7 @@ button[type="submit"] {
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-base);
+  position: relative;
 }
 
 button[type="submit"]:hover:not(:disabled) {
@@ -1256,6 +1257,45 @@ button[type="submit"].btn-disabled {
   cursor: not-allowed;
   opacity: 0.6;
   box-shadow: none;
+}
+
+/* Button loading state */
+button[type="submit"].btn-loading {
+  background-color: var(--color-accent);
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.loader-spinner-btn {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: var(--radius-full);
+  animation: spin 0.8s linear infinite;
+}
+
+/* Form blur overlay */
+.form-blur-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: inherit;
+  z-index: 100;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Dark mode overlay adjustment */
+html[data-theme="dark"] .form-blur-overlay {
+  background-color: rgba(16, 22, 36, 0.8);
 }
 
 @media (max-width: 768px) {
@@ -1397,7 +1437,7 @@ footer > p {
   }
 }
 
-/* Form Loader Styles */
+/* Form Loader Styles - DEPRECATED: Now using button loader */
 .form-loader {
   display: flex;
   flex-direction: column;
@@ -1409,6 +1449,7 @@ footer > p {
   background-color: var(--color-surface-muted);
   border-radius: var(--radius-lg);
   animation: slideUp 0.3s ease-out;
+  display: none; /* Hidden, using button loader instead */
 }
 
 .loader-spinner {
