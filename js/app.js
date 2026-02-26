@@ -169,6 +169,7 @@ const SmoothScrollModule = (() => {
 // ============================================
 const FormValidationModule = (() => {
   const form = document.querySelector('form');
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
   const inputs = {
     nombre: document.getElementById('nombre'),
     email: document.getElementById('email'),
@@ -181,23 +182,40 @@ const FormValidationModule = (() => {
 
     form.addEventListener('submit', handleFormSubmit);
     setupFieldValidation();
+    // Deshabilitar botón inicialmente
+    updateSubmitButtonState();
   };
 
   const setupFieldValidation = () => {
-    // Validación en tiempo real para campos
+    // Validación en tiempo real (input) y al perder foco (blur)
     if (inputs.nombre) {
+      // Filtrar caracteres no permitidos en tiempo real
+      inputs.nombre.addEventListener('input', (e) => {
+        const letrasRegex = /[^a-zA-ZáéíóúñÁÉÍÓÚÑ\s]/g;
+        e.target.value = e.target.value.replace(letrasRegex, '');
+        validateField('nombre');
+        updateSubmitButtonState();
+      });
       inputs.nombre.addEventListener('blur', () => {
         validateField('nombre');
       });
     }
 
     if (inputs.email) {
+      inputs.email.addEventListener('input', () => {
+        validateField('email');
+        updateSubmitButtonState();
+      });
       inputs.email.addEventListener('blur', () => {
         validateField('email');
       });
     }
 
     if (inputs.mensaje) {
+      inputs.mensaje.addEventListener('input', () => {
+        validateField('mensaje');
+        updateSubmitButtonState();
+      });
       inputs.mensaje.addEventListener('blur', () => {
         validateField('mensaje');
       });
@@ -206,6 +224,7 @@ const FormValidationModule = (() => {
     if (inputs.modelo) {
       inputs.modelo.addEventListener('change', () => {
         validateField('modelo');
+        updateSubmitButtonState();
       });
     }
   };
@@ -219,8 +238,9 @@ const FormValidationModule = (() => {
 
     switch (fieldName) {
       case 'nombre':
-        isValid = field.value.trim().length >= 3;
-        errorMessage = 'El nombre debe tener al menos 3 caracteres';
+        const nombreRegex = /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]{3,}$/;
+        isValid = nombreRegex.test(field.value.trim());
+        errorMessage = 'El nombre debe tener al menos 3 caracteres y solo puede contener letras';
         break;
 
       case 'email':
@@ -251,21 +271,21 @@ const FormValidationModule = (() => {
       existingError.remove();
     }
 
+    // Actualizar clases de validación
+    field.classList.remove('field-invalid', 'field-valid');
+
     if (!isValid) {
+      field.classList.add('field-invalid');
+      
       const errorElement = document.createElement('span');
       errorElement.className = 'field-error';
       errorElement.textContent = errorMessage;
-      errorElement.style.cssText = `
-        display: block;
-        color: #dc2626;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-        animation: slideInLeft 0.3s ease-out;
-      `;
       field.parentNode.appendChild(errorElement);
-      field.style.borderColor = '#dc2626';
     } else {
-      field.style.borderColor = '';
+      // Solo marcar como válido si el campo tiene valor
+      if (field.value.trim() !== '') {
+        field.classList.add('field-valid');
+      }
     }
   };
 
@@ -285,7 +305,53 @@ const FormValidationModule = (() => {
       setTimeout(() => {
         form.reset();
         removeSuccessMessage();
+        // Limpiar clases de validación
+        Object.values(inputs).forEach(input => {
+          input.classList.remove('field-invalid', 'field-valid');
+        });
+        updateSubmitButtonState();
       }, 2000);
+    }
+  };
+
+  const checkFormValidity = () => {
+    let allValid = true;
+    Object.keys(inputs).forEach(fieldName => {
+      const field = inputs[fieldName];
+      if (!field) return;
+
+      let isValid = true;
+      switch (fieldName) {
+        case 'nombre':
+          isValid = field.value.trim().length >= 3;
+          break;
+        case 'email':
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          isValid = emailRegex.test(field.value);
+          break;
+        case 'mensaje':
+          isValid = field.value.trim().length >= 10;
+          break;
+        case 'modelo':
+          isValid = field.value !== '';
+          break;
+      }
+      allValid = allValid && isValid;
+    });
+    return allValid;
+  };
+
+  const updateSubmitButtonState = () => {
+    if (!submitBtn) return;
+    
+    const isFormValid = checkFormValidity();
+    
+    if (isFormValid) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('btn-disabled');
+    } else {
+      submitBtn.disabled = true;
+      submitBtn.classList.add('btn-disabled');
     }
   };
 
