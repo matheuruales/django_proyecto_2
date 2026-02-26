@@ -241,6 +241,35 @@ const CvModule = (() => {
           </div>
         </header>
         <div class="cv-section">
+          <h4>Datos personales</h4>
+          <ul class="cv-list">
+            <li>Nombre completo: Johnatan Matheu Ruales Galvis.</li>
+            <li>Rol: Estudiante de Ingenieria de Software.</li>
+            <li>Ubicacion: Campus Pasto, Colombia.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Formacion</h4>
+          <ul class="cv-list">
+            <li>Ingenieria de Software (en curso) — Universidad Cooperativa de Colombia.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Repositorios</h4>
+          <ul class="cv-list">
+            <li>
+              <a href="https://github.com/matheuruales" target="_blank" rel="noopener noreferrer">
+                Perfil GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/matheuruales?tab=repositories" target="_blank" rel="noopener noreferrer">
+                Repositorios publicos
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="cv-section">
           <h4>Perfil</h4>
           <p>
             Soy estudiante de Ingenieria de Software con enfoque en construir productos y
@@ -650,6 +679,7 @@ const CvModule = (() => {
     if (!html) return;
 
     panel.innerHTML = html;
+    panel.querySelector('.cv-card')?.classList.add('hover-spotlight', 'elevated-3d');
     document.body.setAttribute('data-view', 'cv-only');
 
     options.forEach(option => {
@@ -847,12 +877,18 @@ const FormValidationModule = (() => {
       // Desabilitar formulario durante envío
       disableFormDuringSubmit();
       
-      // Mostrar loader
-      showLoader();
+      // Agregar animación de carga al botón
+      submitBtn.classList.add('btn-loading');
+      submitBtn.innerHTML = '<span class="loader-spinner-btn"></span> Enviando...';
+
+      // Mostrar overlay blanco con blur
+      showBlurOverlay();
 
       // Simular envío (2 segundos)
       setTimeout(() => {
-        hideLoader();
+        hideBlurOverlay();
+        submitBtn.classList.remove('btn-loading');
+        submitBtn.innerHTML = 'Enviar solicitud';
         showSuccessMessage();
 
         // Resetear formulario después de 1.5 segundos
@@ -899,6 +935,20 @@ const FormValidationModule = (() => {
     if (loader) {
       loader.classList.add('fade-out');
       setTimeout(() => loader.remove(), 300);
+    }
+  };
+
+  const showBlurOverlay = () => {
+    const overlay = document.createElement('div');
+    overlay.className = 'form-blur-overlay';
+    form.appendChild(overlay);
+  };
+
+  const hideBlurOverlay = () => {
+    const overlay = document.querySelector('.form-blur-overlay');
+    if (overlay) {
+      overlay.classList.add('fade-out');
+      setTimeout(() => overlay.remove(), 300);
     }
   };
 
@@ -1009,6 +1059,86 @@ const ScrollAnimationModule = (() => {
   };
 
   return { init, observeNewElements };
+})();
+
+// ============================================
+// MODULE: Interaction Styles
+// ============================================
+const InteractionModule = (() => {
+  const init = () => {
+    const interactiveSelectors = [
+      '#hero a',
+      '#lineup article a',
+      '#contacto button[type="submit"]',
+      '.theme-toggle',
+      '.cv-toggle',
+      '#cv-menu button'
+    ];
+
+    document.querySelectorAll(interactiveSelectors.join(',')).forEach(element => {
+      element.classList.add('interactive-surface');
+      element.setAttribute('data-ripple', 'true');
+    });
+
+    const spotlightSelectors = [
+      '#lineup article',
+      '#beneficios article',
+      '#caracteristicas article',
+      '#testimonios article'
+    ];
+
+    document.querySelectorAll(spotlightSelectors.join(',')).forEach(element => {
+      element.classList.add('hover-spotlight');
+    });
+
+    const elevatedSelectors = [
+      '#lineup article',
+      '#beneficios article',
+      '#caracteristicas article',
+      '#testimonios article',
+      '.cv-card'
+    ];
+
+    document.querySelectorAll(elevatedSelectors.join(',')).forEach(element => {
+      element.classList.add('elevated-3d');
+    });
+  };
+
+  return { init };
+})();
+
+// ============================================
+// MODULE: Ripple Effect
+// ============================================
+const RippleModule = (() => {
+  const init = () => {
+    const targets = document.querySelectorAll('[data-ripple]');
+    targets.forEach(target => {
+      target.classList.add('ripple');
+      target.addEventListener('click', createRipple);
+    });
+  };
+
+  const createRipple = (event) => {
+    const target = event.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple-effect';
+
+    const size = Math.max(rect.width, rect.height);
+    const clientX = event.clientX || rect.left + rect.width / 2;
+    const clientY = event.clientY || rect.top + rect.height / 2;
+
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${clientY - rect.top - size / 2}px`;
+
+    target.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove());
+  };
+
+  return { init };
 })();
 
 // ============================================
@@ -1244,6 +1374,8 @@ document.addEventListener('DOMContentLoaded', () => {
   NavigationModule.init();
   ThemeModule.init();
   CvModule.init();
+  InteractionModule.init();
+  RippleModule.init();
   SmoothScrollModule.init();
   FormValidationModule.init();
   ScrollAnimationModule.init();
