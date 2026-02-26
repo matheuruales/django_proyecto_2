@@ -1001,7 +1001,7 @@ const CounterModule = (() => {
   const init = () => {
     // Buscar elementos numéricos en el contenido (ej: precios, números)
     const numberElements = document.querySelectorAll(
-      'p:contains("$"), section article p:last-child'
+      'section article p, section p:last-child'
     );
 
     // Implementación simplificada - se activa si hay elementos con números y scroll
@@ -1114,6 +1114,40 @@ const ModalModule = (() => {
 })();
 
 // ============================================
+// MODULE: Scroll Effects
+// ============================================
+const ScrollModule = (() => {
+  const header = document.querySelector('header');
+
+  const init = () => {
+    if (!header) {
+      console.error('ScrollModule: No se encontró el elemento header');
+      return;
+    }
+    
+    console.log('ScrollModule: Inicializado correctamente');
+    
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY || window.pageYOffset;
+      
+      if (scrollPos > 50) {
+        if (!header.classList.contains('scrolled')) {
+          header.classList.add('scrolled');
+          console.log('ScrollModule: Clase "scrolled" agregada');
+        }
+      } else {
+        if (header.classList.contains('scrolled')) {
+          header.classList.remove('scrolled');
+          console.log('ScrollModule: Clase "scrolled" removida');
+        }
+      }
+    }, { passive: true });
+  };
+
+  return { init };
+})();
+
+// ============================================
 // APP INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1127,6 +1161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   CTAModule.init();
   CounterModule.init();
   ModalModule.init();
+  ScrollModule.init();
 
   // Log de inicialización en desarrollo
   if (process.env.NODE_ENV === 'development') {
