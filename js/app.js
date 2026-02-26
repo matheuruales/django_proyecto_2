@@ -241,6 +241,35 @@ const CvModule = (() => {
           </div>
         </header>
         <div class="cv-section">
+          <h4>Datos personales</h4>
+          <ul class="cv-list">
+            <li>Nombre completo: Johnatan Matheu Ruales Galvis.</li>
+            <li>Rol: Estudiante de Ingenieria de Software.</li>
+            <li>Ubicacion: Campus Pasto, Colombia.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Formacion</h4>
+          <ul class="cv-list">
+            <li>Ingenieria de Software (en curso) — Universidad Cooperativa de Colombia.</li>
+          </ul>
+        </div>
+        <div class="cv-section">
+          <h4>Repositorios</h4>
+          <ul class="cv-list">
+            <li>
+              <a href="https://github.com/matheuruales" target="_blank" rel="noopener noreferrer">
+                Perfil GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/matheuruales?tab=repositories" target="_blank" rel="noopener noreferrer">
+                Repositorios publicos
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="cv-section">
           <h4>Perfil</h4>
           <p>
             Soy estudiante de Ingenieria de Software con enfoque en construir productos y
@@ -650,6 +679,7 @@ const CvModule = (() => {
     if (!html) return;
 
     panel.innerHTML = html;
+    panel.querySelector('.cv-card')?.classList.add('hover-spotlight', 'elevated-3d');
     document.body.setAttribute('data-view', 'cv-only');
 
     options.forEach(option => {
@@ -657,6 +687,10 @@ const CvModule = (() => {
     });
 
     setMenuOpen(false);
+
+    ScrollAnimationModule.observeNewElements(
+      panel.querySelectorAll('.cv-card, .cv-section, .cv-project, .cv-tag')
+    );
 
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -990,14 +1024,15 @@ const FormValidationModule = (() => {
 // MODULE: Intersection Observer (Scroll Animations)
 // ============================================
 const ScrollAnimationModule = (() => {
+  let observer = null;
+
   const init = () => {
     if (!('IntersectionObserver' in window)) return;
 
-    const observer = new IntersectionObserver((entries) => {
+    observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Agregar animación al elemento
-          entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+          entry.target.classList.add('is-visible');
           observer.unobserve(entry.target);
         }
       });
@@ -1008,25 +1043,99 @@ const ScrollAnimationModule = (() => {
 
     // Observar elementos animables
     const animatableElements = document.querySelectorAll(
-      'section article, #lineup h2, #beneficios article, #caracteristicas article, #testimonios article, #contacto form'
+      'section article, section h2, #contacto form, img'
     );
+    observeNewElements(animatableElements);
+  };
 
-    animatableElements.forEach(element => {
-      // Solo agregar si no tiene animación inline ya
-      if (!element.style.animation) {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        observer.observe(element);
-      }
+  const observeNewElements = (elements) => {
+    if (!observer || !elements) return;
+
+    elements.forEach(element => {
+      if (!element) return;
+      element.classList.add('reveal');
+      observer.observe(element);
+    });
+  };
+
+  return { init, observeNewElements };
+})();
+
+// ============================================
+// MODULE: Interaction Styles
+// ============================================
+const InteractionModule = (() => {
+  const init = () => {
+    const interactiveSelectors = [
+      '#hero a',
+      '#lineup article a',
+      '#contacto button[type="submit"]',
+      '.theme-toggle',
+      '.cv-toggle',
+      '#cv-menu button'
+    ];
+
+    document.querySelectorAll(interactiveSelectors.join(',')).forEach(element => {
+      element.classList.add('interactive-surface');
+      element.setAttribute('data-ripple', 'true');
     });
 
-    // También animar imágenes
-    const images = document.querySelectorAll('img');
-    images.forEach(img => {
-      if (!img.style.animation) {
-        observer.observe(img);
-      }
+    const spotlightSelectors = [
+      '#lineup article',
+      '#beneficios article',
+      '#caracteristicas article',
+      '#testimonios article'
+    ];
+
+    document.querySelectorAll(spotlightSelectors.join(',')).forEach(element => {
+      element.classList.add('hover-spotlight');
     });
+
+    const elevatedSelectors = [
+      '#lineup article',
+      '#beneficios article',
+      '#caracteristicas article',
+      '#testimonios article',
+      '.cv-card'
+    ];
+
+    document.querySelectorAll(elevatedSelectors.join(',')).forEach(element => {
+      element.classList.add('elevated-3d');
+    });
+  };
+
+  return { init };
+})();
+
+// ============================================
+// MODULE: Ripple Effect
+// ============================================
+const RippleModule = (() => {
+  const init = () => {
+    const targets = document.querySelectorAll('[data-ripple]');
+    targets.forEach(target => {
+      target.classList.add('ripple');
+      target.addEventListener('click', createRipple);
+    });
+  };
+
+  const createRipple = (event) => {
+    const target = event.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple-effect';
+
+    const size = Math.max(rect.width, rect.height);
+    const clientX = event.clientX || rect.left + rect.width / 2;
+    const clientY = event.clientY || rect.top + rect.height / 2;
+
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${clientY - rect.top - size / 2}px`;
+
+    target.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove());
   };
 
   return { init };
@@ -1075,7 +1184,7 @@ const CounterModule = (() => {
   const init = () => {
     // Buscar elementos numéricos en el contenido (ej: precios, números)
     const numberElements = document.querySelectorAll(
-      'p:contains("$"), section article p:last-child'
+      'section article p, section p:last-child'
     );
 
     // Implementación simplificada - se activa si hay elementos con números y scroll
@@ -1188,6 +1297,40 @@ const ModalModule = (() => {
 })();
 
 // ============================================
+// MODULE: Scroll Effects
+// ============================================
+const ScrollModule = (() => {
+  const header = document.querySelector('header');
+
+  const init = () => {
+    if (!header) {
+      console.error('ScrollModule: No se encontró el elemento header');
+      return;
+    }
+    
+    console.log('ScrollModule: Inicializado correctamente');
+    
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY || window.pageYOffset;
+      
+      if (scrollPos > 50) {
+        if (!header.classList.contains('scrolled')) {
+          header.classList.add('scrolled');
+          console.log('ScrollModule: Clase "scrolled" agregada');
+        }
+      } else {
+        if (header.classList.contains('scrolled')) {
+          header.classList.remove('scrolled');
+          console.log('ScrollModule: Clase "scrolled" removida');
+        }
+      }
+    }, { passive: true });
+  };
+
+  return { init };
+})();
+
+// ============================================
 // APP INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1195,12 +1338,15 @@ document.addEventListener('DOMContentLoaded', () => {
   NavigationModule.init();
   ThemeModule.init();
   CvModule.init();
+  InteractionModule.init();
+  RippleModule.init();
   SmoothScrollModule.init();
   FormValidationModule.init();
   ScrollAnimationModule.init();
   CTAModule.init();
   CounterModule.init();
   ModalModule.init();
+  ScrollModule.init();
 
   // Log de inicialización en desarrollo
   if (process.env.NODE_ENV === 'development') {
