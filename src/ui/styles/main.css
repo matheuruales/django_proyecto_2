@@ -619,8 +619,13 @@ html[data-theme="dark"] #hero {
    ============================================ */
 
 #cv {
+  display: none;
   padding: var(--spacing-6xl) var(--spacing-md);
   background-color: var(--color-bg-tertiary);
+}
+
+body[data-view="cv-only"] #cv {
+  display: block;
 }
 
 .cv-wrap {
