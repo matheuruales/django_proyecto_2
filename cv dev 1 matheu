@@ -1,0 +1,44 @@
+JOHNATAN MATHEU RUALES GALVIS (Matheu)
+
+Estudiante de Ingeniería de Software (3er semestre) | Desarrollo de software (Full-Stack / IA / VR)
+Universidad Cooperativa de Colombia (UCC) — Campus Pasto, Colombia
+GitHub: https://github.com/matheuruales
+
+PERFIL
+
+Soy estudiante de Ingeniería de Software con enfoque en construir productos y prototipos integrando frontend, backend y automatización. He trabajado en proyectos de realidad virtual aplicada a educación en salud y en integraciones para agentes de IA orientadas a mensajería y workflows. Me adapto rápido entre desarrollo web, scripts y despliegues básicos, con foco en ejecución y mejora continua.
+
+HABILIDADES TÉCNICAS (confirmadas por mis proyectos)
+	•	Frontend: HTML, CSS, JavaScript; construcción de interfaces web y mejoras de UX/UI.
+	•	Backend / Scripts: Python y Java; desarrollo de lógica, APIs y utilidades.
+	•	Stack usado: React + TypeScript, Java + Spring Boot, PostgreSQL, Firebase (auth), n8n (automatizaciones).
+	•	IA / Agentes: integración con APIs de chat; definición de “capabilities” e intenciones a partir de conversaciones; automatización con webhooks.
+	•	Visualización: Chart.js (gráficos con datos CSV).
+	•	Herramientas/Infra: Git/GitLab; uso básico de servidores (SSH, Nginx) e integraciones tipo Chatwoot.
+
+PROYECTOS DESTACADOS
+
+PulmoMed — Simulador VR avanzado para aprendizaje de cáncer de pulmón (Investigación, UCC)
+	•	Desarrollo un proyecto de investigación orientado a estudiantes y profesionales de salud en Colombia.
+	•	Integro VR y componentes de IA para simular crecimiento y metástasis tumoral.
+	•	Coordino el trabajo con un equipo pequeño (3 integrantes) y un profesor asesor, con apoyo del personal de salud y recursos de la universidad.
+
+MimiPet — Plataforma para registrar y gestionar información de mascotas (Web/App + IA)
+	•	Diseño flujos de registro por pasos para mascotas (datos básicos, vacunas y fechas, desparasitación, alimentación, etc.).
+	•	Trabajo la estructura de módulos orientados a salud/seguimiento y autenticación (Firebase).
+
+Conexión TikTok Inbox + Agente de IA (Integración / Mensajería)
+	•	Analizo conversaciones para identificar capacidades necesarias e intenciones frecuentes de usuarios.
+	•	Integro servicios tipo inbox/CRM y webhooks (p. ej., Chatwoot) para automatizar respuestas y validar la conexión.
+
+Bitcoin Predictor Pro — Interfaz web de predicciones con gráficos (Frontend)
+	•	Construyo un frontend en HTML/CSS/JS con Chart.js para visualizar datos históricos y predichos desde CSV.
+	•	Desarrollo scripts en Python para predicción, incluyendo una variante con variabilidad/volatilidad realista.
+
+pichu_run — Juego estilo Temple Run en Java (Proyecto académico/evento)
+	•	Desarrollo un juego 2D en Java con generación de obstáculos y control de espaciado/aleatoriedad.
+
+EDUCACIÓN
+
+Universidad Cooperativa de Colombia (UCC), Campus Pasto
+Ingeniería de Software — 5 semestre (en curso)
