@@ -1159,6 +1159,44 @@ textarea:focus {
   box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
+/* Estados de validación */
+input.field-invalid,
+select.field-invalid,
+textarea.field-invalid {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
+input.field-invalid:focus,
+select.field-invalid:focus,
+textarea.field-invalid:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+input.field-valid,
+select.field-valid,
+textarea.field-valid {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+input.field-valid:focus,
+select.field-valid:focus,
+textarea.field-valid:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.field-error {
+  display: block;
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  animation: slideInLeft 0.3s ease-out;
+  font-weight: 500;
+}
+
 textarea {
   resize: vertical;
   min-height: 120px;
@@ -1191,14 +1229,23 @@ button[type="submit"] {
   transition: all var(--transition-base);
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:hover:not(:disabled) {
   background-color: var(--color-accent-dark);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
-button[type="submit"]:active {
+button[type="submit"]:active:not(:disabled) {
   transform: translateY(0);
+}
+
+button[type="submit"]:disabled,
+button[type="submit"].btn-disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
